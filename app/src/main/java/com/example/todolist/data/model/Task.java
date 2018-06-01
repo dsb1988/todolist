@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.Random;
 
 public class Task implements Parcelable {
-    private int userId;
+    public int userId;
     public int id;
     public String title;
     public boolean completed;
