@@ -1,4 +1,4 @@
-package com.example.todolist;
+package com.example.todolist.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -11,7 +11,7 @@ public class SwipeController extends ItemTouchHelper.Callback {
 
     private RemoveCallback mRemoveCallback;
 
-    SwipeController(RemoveCallback callback) {
+    public SwipeController(RemoveCallback callback) {
         mRemoveCallback = callback;
     }
 

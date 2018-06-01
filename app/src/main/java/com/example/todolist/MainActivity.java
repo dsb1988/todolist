@@ -15,6 +15,8 @@ import com.example.todolist.data.ResultCallback;
 import com.example.todolist.data.model.Task;
 import com.example.todolist.data.repository.Repository;
 import com.example.todolist.data.repository.TasksNetworkRepository;
+import com.example.todolist.ui.SwipeController;
+import com.example.todolist.ui.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

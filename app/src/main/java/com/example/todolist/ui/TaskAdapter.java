@@ -1,4 +1,4 @@
-package com.example.todolist;
+package com.example.todolist.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.example.todolist.R;
 import com.example.todolist.data.model.Task;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private Context mContext;
     private final List<Task> mTasks;
 
-    TaskAdapter(Context context, List<Task> tasks) {
+    public TaskAdapter(Context context, List<Task> tasks) {
         mContext = context;
         mTasks = tasks;
         setHasStableIds(true);
