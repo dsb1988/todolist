@@ -8,11 +8,12 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.todolist.data.ResultCallback;
-import com.example.todolist.data.repository.Repository;
 import com.example.todolist.data.model.Task;
+import com.example.todolist.data.repository.Repository;
 import com.example.todolist.data.repository.TasksNetworkRepository;
 
 import java.util.ArrayList;
@@ -21,10 +22,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int USERID = 1;
+    private static final String BUNDLE_TASK_LIST = "bundle_task_list";
 
     private EditText mTaskName;
+    private ProgressBar mProgress;
     private TaskAdapter mTaskAdapter;
-    private List<Task> mTaskList;
+    private ArrayList<Task> mTaskList;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         mTaskName = findViewById(R.id.taskName);
 
-        RecyclerView recyclerView = findViewById(R.id.taskList);
+        mRecyclerView = findViewById(R.id.taskList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
 
         mTaskList = new ArrayList<>();
         mTaskAdapter = new TaskAdapter(this, mTaskList);
-        recyclerView.setAdapter(mTaskAdapter);
+        mRecyclerView.setAdapter(mTaskAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeController(new SwipeController.RemoveCallback() {
             @Override
@@ -49,9 +53,26 @@ public class MainActivity extends AppCompatActivity {
                 mTaskAdapter.notifyDataSetChanged();
             }
         }));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
-        loadTasks(USERID);
+        mProgress = findViewById(R.id.progress);
+
+        if (savedInstanceState == null) {
+            loadTasks(USERID);
+        } else {
+            restoreTasks(savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(BUNDLE_TASK_LIST, mTaskList);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        restoreTasks(savedInstanceState);
     }
 
     public void addTask(View view) {
@@ -66,13 +87,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadTasks(int userId) {
+        showProgress(true);
+        showList(false);
         Repository<Task> taskRepository = new TasksNetworkRepository();
         taskRepository.get(userId, new ResultCallback<List<Task>>() {
             @Override
             public void onResult(List<Task> result) {
+                showProgress(false);
+                showList(true);
                 mTaskList.addAll(result);
                 mTaskAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void showList(boolean show) {
+        mRecyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showProgress(boolean show) {
+        mProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void restoreTasks(Bundle savedInstanceState) {
+        List<Task> savedTasks = savedInstanceState.getParcelableArrayList(BUNDLE_TASK_LIST);
+        if (savedTasks != null) {
+            mTaskList.clear();
+            mTaskList.addAll(savedTasks);
+        } else {
+            loadTasks(USERID);
+        }
     }
 }
