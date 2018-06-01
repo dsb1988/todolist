@@ -15,13 +15,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TasksJsonRepository implements Repository<Task> {
+public class TasksMockRepository implements Repository<Task> {
 
-    private static final String TAG = TasksJsonRepository.class.getSimpleName();
-    public static final String FILE_NAME = "tasks.json";
+    private static final String TAG = TasksMockRepository.class.getSimpleName();
+    private static final String FILE_NAME = "tasks.json";
     private final Context mContext;
 
-    public TasksJsonRepository(Context context) {
+    public TasksMockRepository(Context context) {
         mContext = context;
     }
 
