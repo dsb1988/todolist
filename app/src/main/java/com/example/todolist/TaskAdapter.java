@@ -22,6 +22,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     TaskAdapter(Context context, List<Task> tasks) {
         mContext = context;
         mTasks = tasks;
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -63,6 +64,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mTasks.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return mTasks.get(position).id;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
