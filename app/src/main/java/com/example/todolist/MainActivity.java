@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void restoreTasks(Bundle savedInstanceState) {
+        showProgress(false);
         List<Task> savedTasks = savedInstanceState.getParcelableArrayList(BUNDLE_TASK_LIST);
         if (savedTasks != null) {
             mTaskList.clear();
