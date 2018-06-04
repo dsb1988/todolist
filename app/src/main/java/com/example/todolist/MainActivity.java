@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addTask(View view) {
-        String taskName = mTaskName.getText().toString();
+        String taskName = mTaskName.getText().toString().trim();
         if (!TextUtils.isEmpty(taskName)) {
             mTaskList.add(0, Task.newInstance(USERID, taskName));
             mTaskAdapter.notifyDataSetChanged();
